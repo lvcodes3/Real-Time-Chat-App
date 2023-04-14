@@ -26,7 +26,7 @@ const Register = () => {
     theme: "dark",
   };
 
-  const handleFormValidation = () => {
+  const handleInputDataValidation = () => {
     // 1. check if passwords are not equal
     if (password !== confirmPassword) {
       toast.error(
@@ -58,7 +58,7 @@ const Register = () => {
     e.preventDefault();
 
     // 2. check if input data is valid
-    if (handleFormValidation()) {
+    if (handleInputDataValidation()) {
       // process input data using axios to backend API
       const { data } = await axios.post(registerRoute, {
         username,
@@ -96,6 +96,8 @@ const Register = () => {
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            minLength={3}
+            maxLength={20}
             required
           />
           <input
@@ -104,6 +106,7 @@ const Register = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            maxLength={50}
             required
           />
           <input
@@ -112,6 +115,7 @@ const Register = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            minLength={8}
             required
           />
           <input
@@ -120,6 +124,7 @@ const Register = () => {
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            minLength={8}
             required
           />
           <button type="submit">Register</button>
