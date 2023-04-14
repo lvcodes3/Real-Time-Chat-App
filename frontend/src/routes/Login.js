@@ -11,10 +11,9 @@ import { loginRoute } from "../utils/APIRoutes";
 import Logo from "../assets/message.svg";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const navigate = useNavigate();
 
   const toastOptions = {
     position: "bottom-right",
@@ -65,6 +64,14 @@ const Login = () => {
       }
     }
   };
+
+  useEffect(() => {
+    // user has already been logged in or registered
+    if (localStorage.getItem("real-time-chat-app-user")) {
+      // navigate to chat room
+      navigate("/");
+    }
+  }, [navigate]);
 
   return (
     <>

@@ -1,12 +1,11 @@
 const db = require("../db/db"); // PGSQL DB connection
 const bcrypt = require("bcrypt"); // bcrypt for password
 
-// register a user from the register form page
 module.exports.register = async (req, res, next) => {
-  // get input data from req.body
-  const { username, email, password } = req.body;
-
   try {
+    // get input data from req.body
+    const { username, email, password } = req.body;
+
     // 1. check if username already exists in the db
     const usernameCheck = await db.query(
       "SELECT * FROM users WHERE username = $1",
@@ -14,8 +13,8 @@ module.exports.register = async (req, res, next) => {
     );
     if (usernameCheck.rowCount !== 0) {
       return res.json({
-        msg: "Username already exists in the db.",
         status: false,
+        msg: "Username already exists in the db.",
       });
     }
 
@@ -25,8 +24,8 @@ module.exports.register = async (req, res, next) => {
     ]);
     if (emailCheck.rowCount !== 0) {
       return res.json({
-        msg: "Email already exists in the db.",
         status: false,
+        msg: "Email already exists in the db.",
       });
     }
 
@@ -46,6 +45,55 @@ module.exports.register = async (req, res, next) => {
     delete user.rows[0].avatar_image;
 
     // 6. return user data to frontend
+    return res.json({
+      status: true,
+      data: user.rows[0],
+    });
+  } catch (err) {
+    console.log(err.message);
+    next(err);
+  }
+};
+
+module.exports.login = async (req, res, next) => {
+  try {
+    // get input data from req.body
+    const { username, password } = req.body;
+
+    // 1. check if username does not exist in the db
+    const user = await db.query("SELECT * FROM users WHERE username = $1", [
+      username,
+    ]);
+    if (user.rowCount === 0) {
+      return res.json({
+        status: false,
+        msg: "Incorrect username or password.",
+      });
+    }
+
+    // 2. check if password is valid
+    const dbPassword = await db.query(
+      "SELECT password from users WHERE username = $1",
+      [username]
+    );
+    const isValidPassword = await bcrypt.compare(
+      password,
+      dbPassword.rows[0].password
+    );
+    if (!isValidPassword) {
+      return res.json({
+        status: false,
+        msg: "Incorrect username or password.",
+      });
+    }
+
+    // 3. modify returned user obj
+    delete user.rows[0].id;
+    delete user.rows[0].password;
+    delete user.rows[0].is_avatar_image_set;
+    delete user.rows[0].avatar_image;
+
+    // 4. return user data to frontend
     return res.json({
       status: true,
       data: user.rows[0],
