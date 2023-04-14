@@ -39,10 +39,7 @@ module.exports.register = async (req, res, next) => {
     );
 
     // 5. modify returned user obj
-    delete user.rows[0].id;
     delete user.rows[0].password;
-    delete user.rows[0].is_avatar_image_set;
-    delete user.rows[0].avatar_image;
 
     // 6. return user data to frontend
     return res.json({
@@ -88,15 +85,34 @@ module.exports.login = async (req, res, next) => {
     }
 
     // 3. modify returned user obj
-    delete user.rows[0].id;
     delete user.rows[0].password;
-    delete user.rows[0].is_avatar_image_set;
-    delete user.rows[0].avatar_image;
 
     // 4. return user data to frontend
     return res.json({
       status: true,
       data: user.rows[0],
+    });
+  } catch (err) {
+    console.log(err.message);
+    next(err);
+  }
+};
+
+module.exports.setAvatar = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const avatarImage = req.body.image;
+
+    // update the user
+    const userData = await db.query(
+      "UPDATE users SET avatar_image = $1, is_avatar_image_set = $2 WHERE id = $3 RETURNING *",
+      [avatarImage, true, id]
+    );
+
+    // send back confirmation
+    return res.json({
+      isSet: userData.rows[0].is_avatar_image_set,
+      image: userData.rows[0].avatar_image,
     });
   } catch (err) {
     console.log(err.message);
