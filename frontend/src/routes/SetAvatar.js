@@ -64,7 +64,7 @@ const SetAvatar = () => {
     const getAvatars = async () => {
       for (let i = 0; i < 3; i++) {
         const url = `https://robohash.org/${Math.round(
-          Math.random() * 100000
+          Math.random() * 1000000
         )}.png`;
         urls.push(url);
       }

@@ -119,3 +119,23 @@ module.exports.setAvatar = async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports.getAllUsers = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    // get all users except for the currently logged in user
+    const allUsers = await db.query("SELECT * FROM users WHERE id != $1", [id]);
+
+    // modify returned allUsers obj
+    for (let i = 0; i < allUsers.rows.length; i++) {
+      delete allUsers.rows[i].password;
+    }
+
+    // send back all users
+    return res.json(allUsers.rows);
+  } catch (err) {
+    console.log(err.message);
+    next(err);
+  }
+};
