@@ -51,8 +51,8 @@ const SetAvatar = () => {
         user.is_avatar_image_set = data.data.isSet;
         user.avatar_image = data.data.image;
         localStorage.setItem("real-time-chat-app-user", JSON.stringify(user));
-        // redirect
-        // navigate("/");
+        // redirect to chat page
+        navigate("/");
       } else {
         toast.error("Error setting avatar, please try again.", toastOptions);
       }
@@ -83,7 +83,7 @@ const SetAvatar = () => {
       ) : (
         <Container>
           <div className="title-container">
-            <h1>Pick an avatar as your profile picture</h1>
+            <h1>Pick an avatar for your profile picture</h1>
           </div>
           <div className="avatars">
             {avatars.map((avatar, index) => {
