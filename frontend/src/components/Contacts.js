@@ -4,7 +4,7 @@ import styled from "styled-components";
 // assets
 import Logo from "../assets/message.svg";
 
-const Contacts = ({ contacts, currentUser }) => {
+const Contacts = ({ contacts, currentUser, changeChat }) => {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentContactSelected, setCurrentContactSelected] =
@@ -17,7 +17,10 @@ const Contacts = ({ contacts, currentUser }) => {
     }
   }, [currentUser]);
 
-  const changeCurrentChat = (index, contact) => {};
+  const changeCurrentChat = (index, contact) => {
+    setCurrentContactSelected(index);
+    changeChat(contact);
+  };
 
   return (
     <>
@@ -35,11 +38,12 @@ const Contacts = ({ contacts, currentUser }) => {
                     index === currentContactSelected ? "selected" : ""
                   }`}
                   key={index}
+                  onClick={() => changeCurrentChat(index, contact)}
                 >
                   <div className="avatar">
                     <img
                       src={contact.avatar_image}
-                      style={{ width: 110, height: 110 }}
+                      style={{ width: 75, height: 75 }}
                       alt="avatar"
                     />
                   </div>
@@ -54,7 +58,7 @@ const Contacts = ({ contacts, currentUser }) => {
             <div className="avatar">
               <img
                 src={currentUserImage}
-                style={{ width: 110, height: 110 }}
+                style={{ width: 75, height: 75 }}
                 alt="avatar"
               />
             </div>
@@ -70,7 +74,7 @@ const Contacts = ({ contacts, currentUser }) => {
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 10% 70% 20%;
+  grid-template-rows: 10% 75% 15%;
   overflow: hidden;
   background-color: #c89666; /* sand tan shadow */
 
@@ -125,7 +129,8 @@ const Container = styled.div`
     }
 
     .selected {
-      background-color: black;
+      background-color: #ebc89b;
+      border: 1px solid black;
     }
   }
 

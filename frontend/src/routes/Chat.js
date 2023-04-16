@@ -12,6 +12,7 @@ const Chat = () => {
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [currentChat, setCurrentChat] = useState(undefined);
 
   // checking if user is logged in
   useEffect(() => {
@@ -44,11 +45,19 @@ const Chat = () => {
     getContacts();
   }, [currentUser, navigate]);
 
+  const handleChatChange = (chat) => {
+    setCurrentChat(chat);
+  };
+
   return (
     <>
       <Container>
         <div className="container">
-          <Contacts contacts={contacts} currentUser={currentUser} />
+          <Contacts
+            contacts={contacts}
+            currentUser={currentUser}
+            changeChat={handleChatChange}
+          />
         </div>
       </Container>
     </>
@@ -66,11 +75,11 @@ const Container = styled.div`
   background-color: #12343b; /* night blue shadow */
 
   .container {
-    height: 85vh;
-    width: 85vw;
+    height: 90vh;
+    width: 90vw;
     background-color: #2d545e; /* night blue */
     display: grid;
-    grid-template-columns: 25% 75%;
+    grid-template-columns: 30% 70%;
     @media screen and (min-width: 720px) and (max-width: 1080px) {
       grid-template-columns: 35% 65%;
     }
