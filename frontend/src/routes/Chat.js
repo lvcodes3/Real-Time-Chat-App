@@ -7,12 +7,15 @@ import styled from "styled-components";
 import { allUsersRoute } from "../utils/APIRoutes";
 // components
 import Contacts from "../components/Contacts";
+import Welcome from "../components/Welcome";
+import ChatContainer from "../components/ChatContainer";
 
 const Chat = () => {
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [currentChat, setCurrentChat] = useState(undefined);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // checking if user is logged in
   useEffect(() => {
@@ -23,6 +26,7 @@ const Chat = () => {
         setCurrentUser(
           await JSON.parse(localStorage.getItem("real-time-chat-app-user"))
         );
+        setIsLoaded(true);
       }
     };
     checkUserStatus();
@@ -58,6 +62,11 @@ const Chat = () => {
             currentUser={currentUser}
             changeChat={handleChatChange}
           />
+          {isLoaded && currentChat === undefined ? (
+            <Welcome currentUser={currentUser} />
+          ) : (
+            <ChatContainer currentChat={currentChat} />
+          )}
         </div>
       </Container>
     </>

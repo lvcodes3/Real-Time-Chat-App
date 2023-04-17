@@ -28,7 +28,7 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
         <Container>
           <div className="header">
             <img src={Logo} alt="Message Logo" />
-            <h3>Chat</h3>
+            <h3>Chat Contacts</h3>
           </div>
           <div className="contacts">
             {contacts.map((contact, index) => {
