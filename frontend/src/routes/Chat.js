@@ -86,7 +86,7 @@ const Container = styled.div`
   .container {
     height: 90vh;
     width: 90vw;
-    background-color: #2d545e; /* night blue */
+    background-color: #c89666; /* sand tan shadow */
     display: grid;
     grid-template-columns: 30% 70%;
     @media screen and (min-width: 720px) and (max-width: 1080px) {
