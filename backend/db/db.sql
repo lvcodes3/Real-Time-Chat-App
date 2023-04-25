@@ -15,3 +15,12 @@ CREATE TABLE users (
     is_avatar_image_set BOOLEAN DEFAULT FALSE,
     avatar_image TEXT DEFAULT ''
 );
+
+-- 3. create the messages table
+CREATE TABLE messages (
+    id SERIAL NOT NULL PRIMARY KEY,
+    message TEXT NOT NULL,
+    sender_id INT NOT NULL REFERENCES users(id),
+    receiver_id INT NOT NULL REFERENCES users(id),
+    send_date TIMESTAMP NOT NULL
+);
