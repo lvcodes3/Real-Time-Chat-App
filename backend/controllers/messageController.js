@@ -3,9 +3,13 @@ const db = require("../db/db"); // PGSQL DB connection
 module.exports.addMessage = async (req, res, next) => {
   try {
     const { from, to, message } = req.body;
+    console.log(req.body);
+
+    const date = new Date();
+
     const response = await db.query(
       "INSERT INTO messages(message, sender_id, receiver_id, send_date) VALUES($1, $2, $3, $4) RETURNING *",
-      [message, from, to]
+      [message, from, to, date]
     );
     if (response.rowCount > 0) {
       return res.json({

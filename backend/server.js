@@ -21,7 +21,7 @@ const userRoutes = require("./routes/userRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 // routes
 app.use("/api/v1/auth", userRoutes);
-app.use("/api/v1/messages/", messageRoutes);
+app.use("/api/v1/messages", messageRoutes);
 
 // server listening
 const server = app.listen(process.env.PORT, () => {
